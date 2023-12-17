@@ -1,24 +1,29 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './components/dashboard';
+import TaskList from './components/tasklist';
+import TaskForm from './components/taskform';
+import Settings from './components/Settings'
+import Navbar from './components/navbar';
+import Footer from './components/footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar /> 
+      <div className="content-wrapper">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tasklist" element={<TaskList />} />
+          <Route path="/taskform" element={<TaskForm />} />
+          <Route path="/Settings" element={<Settings />} />
+        </Routes>
+      </div>
+      <Footer /> 
+    </Router>
   );
 }
 

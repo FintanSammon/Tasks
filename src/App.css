@@ -24,6 +24,10 @@
   color: white;
 }
 
+.content-wrapper {
+  min-height: calc(100vh - 60px); 
+}
+
 .App-link {
   color: #61dafb;
 }

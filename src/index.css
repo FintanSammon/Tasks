@@ -7,7 +7,38 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Light theme styles */
+body.light {
+  background-color: #fff;
+  color: #333;
+}
+
+
+
+/* Dark theme styles */
+body.dark {
+  background-color: #121212; /* Dark background */
+  color: #ffffff; /* Light text */
+}
+
+body.light, body.light h2, body.light label {
+  color: #000000; /* Dark text for light theme */
+}
+
+body.dark, body.dark h2, body.dark label {
+  color: #e0e0e0; /* Light text for dark theme */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+:root {
+  --navbar-bg-color: #f4f4f4; /* Default background color */
+  --navbar-text-color: #333; /* Default text color */
+  --navbar-border-color: #ccc; /* Default border color */
+  --navbar-text-hover-color: #007bff; /* Default text hover color */
+}
+
