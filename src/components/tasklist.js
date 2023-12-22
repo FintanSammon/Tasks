@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './tasklist.css'; 
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import axios from 'axios'; // Import axios for HTTP requests
+import './tasklist.css'; // Importing CSS for styling
+import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Importing Firebase auth functions
 
 
+// Component for editing a task
 function TaskEditForm({ task, onSave, onCancel, onChange }) {
   return (
     <div className="task-edit-form">
+      {/* Input fields for editing task details */}
       <input
         type="text"
         className="task-edit-input"
@@ -42,12 +44,14 @@ function TaskEditForm({ task, onSave, onCancel, onChange }) {
 }
 
 function TaskList() {
-  const [tasks, setTasks] = useState([]);
-  const [editingTask, setEditingTask] = useState(null);
+  const [tasks, setTasks] = useState([]); // State for storing tasks
+  const [editingTask, setEditingTask] = useState(null); // State for the task currently being edited
+  
+  // States for sorting and date format preferences
   const [sortKey, setSortKey] = useState(localStorage.getItem('taskSort') || 'dueDate');
   const [dateFormat, setDateFormat] = useState(localStorage.getItem('dateFormat') || 'MM/DD/YYYY');
 
-
+  // Function to sort tasks based on a key
   const sortTasks = (tasksToSort, key = sortKey) => {
     switch (key) {
       case 'dueDate':
@@ -62,10 +66,10 @@ function TaskList() {
       default:
         break;
     }
-    setTasks(tasksToSort);
+    setTasks(tasksToSort); // Update sorted tasks
   };
 
-
+  // Function to fetch tasks from the server
   const fetchTasks = async () => {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -74,6 +78,7 @@ function TaskList() {
       return;
     }
 
+        // Fetching logic with axios
     try {
       const response = await axios.get(`http://localhost:5000/api/tasks?userUID=${user.uid}`);
       let fetchedTasks = response.data;
@@ -98,6 +103,7 @@ function TaskList() {
     }
   };
 
+    // Effect hook to monitor auth state and localStorage changes
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -129,11 +135,13 @@ function TaskList() {
 
   
   
-
+  // Function to format date strings
   const formatDate = (isoString) => {
     if (!isoString) return 'No date';
     const date = new Date(isoString);
+
     
+        // Date formatting logic
     switch (dateFormat) {
       case 'DD/MM/YYYY':
         return date.toLocaleDateString('en-GB');
@@ -145,7 +153,7 @@ function TaskList() {
     }
   };
 
-
+  // Function to mark a task as complete
   const markAsComplete = async (taskId) => {
     const updatedTasks = tasks.map((task) =>
       task._id === taskId ? { ...task, status: 'Complete' } : task
@@ -164,6 +172,7 @@ function TaskList() {
     }
   };
 
+    // Function to delete a task
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:5000/api/tasks/${taskId}`);
@@ -173,19 +182,24 @@ function TaskList() {
     }
   };
 
+    // Function to set a task for editing
   const editTask = (task) => {
     setEditingTask({ ...task });
   };
-
+  
+  // Function to cancel editing
   const cancelEdit = () => {
     setEditingTask(null);
   };
 
+    // Function to handle input change in edit form
   const handleEditInputChange = (e, field) => {
     const updatedTask = { ...editingTask, [field]: e.target.value };
     setEditingTask(updatedTask);
   };
 
+
+    // Function to update a task
   const updateTask = async () => {
     try {
       await axios.put(`http://localhost:5000/api/tasks/${editingTask._id}`, editingTask);
@@ -196,6 +210,8 @@ function TaskList() {
     }
   };
 
+
+    // Rendering the task list
   return (
     <div className="task-list-container">
       <h2>Task List</h2>
@@ -231,4 +247,4 @@ function TaskList() {
   );
 }
 
-export default TaskList;
+export default TaskList; // Exporting the TaskList component
