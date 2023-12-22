@@ -20,22 +20,6 @@ mongoose.connect('mongodb+srv://admin:Buddy123@cluster0.zupcoct.mongodb.net/Task
 .catch((err) => console.log(err));
 
 
-// User Schema
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-});
-
-// Pre-save hook to hash password before saving a user
-userSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 8);
-  }
-  next();
-});
-
-const User = mongoose.model('User', userSchema);
 
 // Task Schema
 const taskSchema = new mongoose.Schema({
@@ -43,42 +27,22 @@ const taskSchema = new mongoose.Schema({
   description: String,
   dueDate: Date,
   status: String,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  userUID: { type: String, required: true }
 });
 
 const Task = mongoose.model('Task', taskSchema);
 
-// User registration route
-app.post('/api/users/register', async (req, res) => {
-  try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).send({ user });
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
 
-// User login route
-app.post('/api/users/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).send({ message: 'Invalid credentials' });
-    }
-    const token = jwt.sign({ _id: user._id }, 'your_jwt_secret');
-    res.send({ user, token });
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+
 
 
 // Create a new task
 app.post('/api/tasks', async (req, res) => {
   try {
-    const task = new Task(req.body);
+    const task = new Task({
+      ...req.body,
+      userUID: req.body.userUID
+    });
     await task.save();
     res.status(201).send(task);
   } catch (error) {
@@ -89,7 +53,8 @@ app.post('/api/tasks', async (req, res) => {
 // Retrieve all tasks
 app.get('/api/tasks', async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const userUID = req.query.userUID;
+    const tasks = await Task.find({ userUID });
     res.send(tasks);
   } catch (error) {
     res.status(500).send(error);

@@ -6,12 +6,10 @@
   
   
   
-  /* Navbar toggler icon */
   .navbar-toggler-icon {
     background-color: var(--navbar-text-color);
   }
   
-  /* Navbar links */
   .navbar-nav .nav-link {
     font-size: 18px;
     color: var(--navbar-text-color);
@@ -19,8 +17,8 @@
 }
   
   .navbar-nav .nav-link:hover {
-    color: var(--navbar-text-hover-color); /* Change color on hover */
-    transform: translateX(5px); /* Slide in effect on hover */
+    color: var(--navbar-text-hover-color); 
+    transform: translateX(5px); 
 
   }
   

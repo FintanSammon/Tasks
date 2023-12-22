@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './tasklist.css'; 
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 function TaskEditForm({ task, onSave, onCancel, onChange }) {
   return (
@@ -43,36 +45,90 @@ function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
   const [sortKey, setSortKey] = useState(localStorage.getItem('taskSort') || 'dueDate');
+  const [dateFormat, setDateFormat] = useState(localStorage.getItem('dateFormat') || 'MM/DD/YYYY');
+
+
+  const sortTasks = (tasksToSort, key = sortKey) => {
+    switch (key) {
+      case 'dueDate':
+        tasksToSort.sort((a, b) => new Date(a.dueDate || 0) - new Date(b.dueDate || 0));
+        break;
+      case 'status':
+        tasksToSort.sort((a, b) => a.status.localeCompare(b.status));
+        break;
+      case 'title':
+        tasksToSort.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      default:
+        break;
+    }
+    setTasks(tasksToSort);
+  };
+
 
   const fetchTasks = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      console.error('No user logged in');
+      return;
+    }
+
     try {
-      const response = await axios.get('http://localhost:5000/api/tasks');
-      let sortedTasks = response.data;
+      const response = await axios.get(`http://localhost:5000/api/tasks?userUID=${user.uid}`);
+      let fetchedTasks = response.data;
 
       switch (sortKey) {
         case 'dueDate':
-          sortedTasks.sort((a, b) => new Date(a.dueDate || 0) - new Date(b.dueDate || 0));
+          fetchedTasks.sort((a, b) => new Date(a.dueDate || 0) - new Date(b.dueDate || 0));
           break;
         case 'status':
-          sortedTasks.sort((a, b) => a.status.localeCompare(b.status));
+          fetchedTasks.sort((a, b) => a.status.localeCompare(b.status));
           break;
         case 'title':
-          sortedTasks.sort((a, b) => a.title.localeCompare(b.title));
+          fetchedTasks.sort((a, b) => a.title.localeCompare(b.title));
           break;
         default:
           break;
       }
 
-      setTasks(sortedTasks);
+      setTasks(fetchedTasks);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
   };
 
   useEffect(() => {
-    fetchTasks();
-  }, [sortKey]);
-  const dateFormat = localStorage.getItem('dateFormat') || 'MM/DD/YYYY';
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchTasks(user.uid); // Fetching tasks when user logs in
+      } else {
+        setTasks([]); // Clearing the tasks when no user is logged in
+      }
+    });
+
+    const handleStorageChange = (event) => {
+      if (event.key === 'taskSort') {
+        const newSortKey = localStorage.getItem('taskSort') || 'dueDate';
+        setSortKey(newSortKey);
+        sortTasks([...tasks], newSortKey);
+      } else if (event.key === 'dateFormat') {
+        setDateFormat(localStorage.getItem('dateFormat') || 'MM/DD/YYYY');
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+
+  
+  
 
   const formatDate = (isoString) => {
     if (!isoString) return 'No date';

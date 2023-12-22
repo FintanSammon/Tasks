@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './taskform.css';
-
+import { getAuth } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
 function TaskForm() {
   const [title, setTitle] = useState('');
@@ -9,35 +10,50 @@ function TaskForm() {
   const [dueDate, setDueDate] = useState('');
   const [status, setStatus] = useState('');
 
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create an object with the form data
+    if (!user) {
+      console.error('No user logged in');
+      return;
+    }
+
     const newTask = {
       title,
       description,
       dueDate,
       status,
+      userUID: user.uid 
     };
 
+
     try {
-      // Send a POST request to the server to create a new task
       const response = await axios.post('http://localhost:5000/api/tasks', newTask);
 
-      // Handle the response as needed 
       console.log('Task created:', response.data);
 
-      // Reset the form inputs
       setTitle('');
       setDescription('');
       setDueDate('');
       setStatus('');
     } catch (error) {
-      // Handle any errors 
+      // Error Handler
       console.error('Error creating task:', error);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="task-form-container">
+        <h2>Please Log In</h2>
+        <p>To start creating tasks, please <Link to="/login">log in</Link>.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="task-form-container">

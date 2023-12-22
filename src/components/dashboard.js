@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
-import './dashboard.css'; 
+import './dashboard.css';
+import { getAuth } from 'firebase/auth';
 
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
+  const auth = getAuth();
+  const user = auth.currentUser; 
 
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme') || 'light';
@@ -14,15 +17,29 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      if (!user) {
+        console.error('No user logged in');
+        return;
+      }
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
+        const response = await axios.get(`http://localhost:5000/api/tasks?userUID=${user.uid}`);
         setTasks(response.data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     };
+
     fetchTasks();
-  }, []);
+  }, [user]); 
+
+  if (!user) {
+    return (
+      <div className="dashboard-container">
+        <h2>Please Log In</h2>
+        <p>To view your dashboard, please log in.</p>
+      </div>
+    );
+  }
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(task => task.status === 'Complete').length;

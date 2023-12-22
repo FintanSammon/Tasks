@@ -1,9 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.css'; 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setIsLoggedIn(!!user);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      setIsLoggedIn(false);
+      navigate('/');
+    }).catch((error) => {
+      console.error('Sign out failed:', error);
+    });
+  };
+  
   return (
     <nav className="navbar navbar-expand-lg" id="navbar">
       <div className="container">
@@ -24,6 +47,21 @@ function Navbar() {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/Settings">Settings</Link> {/* Link to Task Form */}
+            </li>
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <FontAwesomeIcon icon={faUser} /> {/* User Icon */}
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                {!isLoggedIn ? (
+                  <>
+                    <li><Link className="dropdown-item" to="/registration">Register</Link></li>
+                    <li><Link className="dropdown-item" to="/login">Login</Link></li>
+                  </>
+                ) : (
+                  <li><button className="dropdown-item" onClick={handleSignOut}>Sign Out</button></li>
+                )}
+              </ul>
             </li>
           </ul>
         </div>
