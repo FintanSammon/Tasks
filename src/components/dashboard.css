@@ -1,39 +1,45 @@
+/* Styles for the dashboard container */
 .dashboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-  }
-  
-  .flex-container {
-    width: 100%; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .chart-container {
-    width: 90vw; 
-    max-width: none; 
-    margin: auto; 
-  }
-  
-  .chart-container canvas {
-    display: block; 
-    margin: auto; 
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+/* Styles for a flexible container */
+.flex-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles for the chart container */
+.chart-container {
+  width: 90vw;
+  max-width: none;
+  margin: auto;
+}
+
+/* Styles for the canvas element inside the chart container */
+.chart-container canvas {
+  display: block;
+  margin: auto;
+}
+
+/* Styles for the dashboard header */
 .dashboard-header {
   text-align: center;
   margin-bottom: 20px;
 }
 
+/* Styles for the dashboard summary section */
 .dashboard-summary {
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
 }
 
+/* Styles for individual summary items */
 .summary-item {
   background-color: #fff;
   padding: 15px;
@@ -43,6 +49,7 @@
   color: #333;
 }
 
+/* Styles for paragraphs inside summary items */
 .summary-item p {
   margin: 5px 0;
   font-size: 16px;
@@ -50,15 +57,18 @@
 }
 
 /* Dark theme styles */
+/* Styles for the dashboard header in dark theme */
 body.dark .dashboard-header {
-  color: #fff; 
+  color: #fff;
 }
 
+/* Styles for summary items in dark theme */
 body.dark .dashboard-summary .summary-item {
-  background-color: #333; 
-  color: #fff; 
+  background-color: #333;
+  color: #fff;
 }
 
+/* Styles for paragraphs inside summary items in dark theme */
 body.dark .dashboard-summary .summary-item p {
-  color: #fff; 
+  color: #fff;
 }
