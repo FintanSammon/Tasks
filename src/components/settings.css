@@ -1,3 +1,4 @@
+/* Styling for the settings container */
 .settings-container {
   max-width: 600px;
   margin: 20px auto;
@@ -7,21 +8,25 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Style for the heading within the settings container */
 .settings-container h2 {
   text-align: center;
   margin-bottom: 30px;
 }
 
+/* Style for each settings option */
 .settings-option {
   margin-bottom: 20px;
 }
 
+/* Style for labels in settings options */
 .settings-option label {
   display: block;
   font-size: 16px;
   margin-bottom: 8px;
 }
 
+/* Style for select elements in settings options */
 .settings-option select {
   width: 100%;
   padding: 8px 12px;
@@ -31,7 +36,7 @@
   font-size: 16px;
 }
 
-/* Style for light and dark themes */
+/* Styles for light and dark themes */
 body.light .settings-container {
   background: #fff;
   color: #333;
@@ -52,11 +57,13 @@ body.dark .settings-option select {
   border-color: #777;
 }
 
+/* Style for select element when focused */
 .settings-option select:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
+/* Styles for task edit form */
 .task-edit-form {
   display: flex;
   flex-direction: column;
@@ -67,12 +74,14 @@ body.dark .settings-option select {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Style for input fields in task edit form */
 .task-edit-input {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
 
+/* Style for action buttons */
 .action-button {
   padding: 10px 15px;
   border: none;
@@ -81,17 +90,19 @@ body.dark .settings-option select {
   font-weight: bold;
 }
 
+/* Style for save button */
 .save-button {
   background-color: #4CAF50;
   color: white;
 }
 
+/* Style for cancel button */
 .cancel-button {
   background-color: #f44336;
   color: white;
 }
 
-/* Dark theme styles */
+/* Dark theme styles for task edit form and inputs */
 body.dark .task-edit-form {
   background: #333;
   color: #fff;
@@ -103,6 +114,7 @@ body.dark .task-edit-input {
   border-color: #777;
 }
 
+/* Dark theme style for action buttons */
 body.dark .action-button {
   color: #fff;
 }
