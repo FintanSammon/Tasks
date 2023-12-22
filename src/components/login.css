@@ -1,25 +1,30 @@
+/* Styles for both login and registration form containers */
 .login-form-container, .register-form-container {
-  max-width: 400px;
-  margin: auto;
+  max-width: 400px; 
+  margin: auto; 
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   border-radius: 8px;
 }
 
+/* Styling for header element (h2) inside the form */
 h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center; 
+  margin-bottom: 20px; 
 }
 
+/* Styling for each group of form elements */
 .form-group {
   margin-bottom: 15px;
 }
 
+/* Styling for labels in the form */
 label {
   display: block;
   margin-bottom: 5px;
 }
 
+/* Styling for email and password input fields */
 input[type="email"], input[type="password"] {
   width: 100%;
   padding: 10px;
@@ -27,16 +32,18 @@ input[type="email"], input[type="password"] {
   border-radius: 4px;
 }
 
+/* Styling for the submit button */
 .submit-button {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 4px; 
   cursor: pointer;
 }
 
+/* Hover effect for the submit button */
 .submit-button:hover {
   background-color: #0056b3;
 }
