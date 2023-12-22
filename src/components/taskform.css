@@ -1,57 +1,60 @@
+/* Style for the task form container */
 .task-form-container {
     padding: 20px;
-    background-color: #f7f7f7; /* Light background */
+    background-color: #f7f7f7;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     margin: 30px auto;
-  }
-  
-  .task-form-field {
+}
+
+/* Style for each field in the form */
+.task-form-field {
     margin-bottom: 15px;
-  }
-  
-  .task-form-input {
+}
+
+/* Style for input fields in the form */
+.task-form-input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc; /* Border color for light theme */
+    border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #fff; 
-    color: #333; /* Text color for light theme */
-  }
-  
-  .task-form-button {
+    background-color: #fff;
+    color: #333;
+}
+
+/* Style for the submit button in the form */
+.task-form-button {
     background-color: #5cb85c;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
-  .task-form-button:hover {
+}
+
+/* Hover style for the submit button */
+.task-form-button:hover {
     background-color: #4cae4c;
-  }
-  
-  /* Dark theme styles */
-  body.dark .task-form-container {
-    background-color: #333; /* Dark background for dark theme */
-    color: #fff; /* Text color for dark theme */
-  }
-  
-  body.dark .task-form-input {
-    background-color: #555; /* Input background for dark theme */
-    border: 1px solid #777; /* Border color for dark theme */
-    color: #fff; /* Text color for dark theme */
-  }
-  
-  body.dark .task-form-button {
-    background-color: #5cb85c; 
-    color: white; /* Text color for buttons in dark theme */
-  }
-  
-  body.dark .task-form-button:hover {
-    background-color: #4cae4c; 
-  }
-  
-  
+}
+
+/* Dark theme styles */
+body.dark .task-form-container {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark .task-form-input {
+    background-color: #555;
+    border: 1px solid #777;
+    color: #fff;
+}
+
+body.dark .task-form-button {
+    background-color: #5cb85c;
+    color: white;
+}
+
+body.dark .task-form-button:hover {
+    background-color: #4cae4c;
+}
